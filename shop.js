@@ -5,7 +5,7 @@ const shopItems = [
     description: "A small browser game packaged as a ZIP with an HTML entry file.",
     price: "$0.01",
     image: "favicon.png",
-    link: "games/sample-platformer/index.html",
+    link: "games/sample-platformer.zip",
     downloadUrl: "games/sample-platformer.zip",
     checkoutUrl: "https://example.com/checkout/sample-platformer"
   }
@@ -106,11 +106,11 @@ function renderShopItems() {
               <span class="price">${item.price || "Price coming soon"}</span>
             </div>
             <div>${item.description || ""}</div>
-            <div class="shop-actions">
-              ${canAccess && item.link ? `<a href="${item.link}" target="_blank" rel="noopener">▶ Play</a>` : ""}
-              ${canAccess && item.downloadUrl ? `<a href="${item.downloadUrl}" download>⬇ Download</a>` : ""}
-              ${!canAccess ? `<button type="button" data-item-id="${item.id}">PayPal</button>` : ""}
-            </div>
+          <div class="shop-actions">
+            ${canAccess && item.link ? `<button type="button" class="play-btn" data-game-url="${item.link}">▶ Play</button>` : ""}
+            ${canAccess && item.downloadUrl ? `<a href="${item.downloadUrl}" download>⬇ Download</a>` : ""}
+            ${!canAccess ? `<button type="button" data-item-id="${item.id}">Pay</button>` : ""}
+          </div>
           </article>
         `;
       }
@@ -119,5 +119,12 @@ function renderShopItems() {
 
   container.querySelectorAll("button[data-item-id]").forEach((button) => {
     button.addEventListener("click", () => handlePurchase(button.dataset.itemId, button));
+  });
+
+  container.querySelectorAll("button.play-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const gameUrl = button.dataset.gameUrl;
+      if (window.playGame) window.playGame(gameUrl);
+    });
   });
 }

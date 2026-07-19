@@ -106,11 +106,11 @@ function renderVrShopItems() {
               <span class="price">${item.price || "Free"}</span>
             </div>
             <div>${item.description || ""}</div>
-            <div class="shop-actions">
-              ${canAccess && item.playUrl ? `<a href="${item.playUrl}" target="_blank" rel="noopener">▶ Play</a>` : ""}
-              ${canAccess && item.downloadUrl ? `<a href="${item.downloadUrl}" download>⬇ Download</a>` : ""}
-              ${!canAccess ? `<button type="button" data-item-id="${item.id}">PayPal</button>` : ""}
-            </div>
+          <div class="shop-actions">
+            ${canAccess && item.playUrl ? `<button type="button" class="play-btn" data-game-url="${item.playUrl}">▶ Play</button>` : ""}
+            ${canAccess && item.downloadUrl ? `<a href="${item.downloadUrl}" download>⬇ Download</a>` : ""}
+            ${!canAccess ? `<button type="button" data-item-id="${item.id}">Pay</button>` : ""}
+          </div>
           </article>
         `;
       }
@@ -119,5 +119,12 @@ function renderVrShopItems() {
 
   container.querySelectorAll("button[data-item-id]").forEach((button) => {
     button.addEventListener("click", () => handleVrPurchase(button.dataset.itemId, button));
+  });
+
+  container.querySelectorAll("button.play-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const gameUrl = button.dataset.gameUrl;
+      if (window.playGame) window.playGame(gameUrl);
+    });
   });
 }

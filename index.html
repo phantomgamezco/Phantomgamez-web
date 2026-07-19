@@ -9,6 +9,7 @@
     <link rel="icon" href="favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="favicon.png" />
     <link rel="manifest" href="manifest.json" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
       :root {
         color-scheme: dark;
@@ -275,9 +276,6 @@
             Shop and VR Shop added. Sign in to access purchases and sync your library.
           </p>
 
-          <div class="hero-media">
-            <img src="terminal.gif" alt="Animated terminal preview" />
-          </div>
         </section>
 
         <section class="card status-card" aria-label="Status update">
@@ -325,6 +323,13 @@
           </div>
         </div>
       </section>
+
+      <section id="gameView" class="view" aria-live="polite">
+        <div id="gameContainer" style="width: 100%; height: 100%; display: flex; flex-direction: column; gap: 16px;">
+          <button id="backFromGame" style="padding: 12px; border: none; border-radius: 12px; background: rgba(255,255,255,0.12); color: white; font-weight: 600; cursor: pointer;">← Back</button>
+          <div id="gameFrame" style="flex: 1; border-radius: 20px; overflow: hidden; background: #0a0e18; border: 1px solid rgba(255,255,255,0.1);"></div>
+        </div>
+      </section>
     </main>
 
     <nav class="bottom-nav" aria-label="Bottom app bar">
@@ -343,6 +348,7 @@
       const shopView = document.getElementById("shopView");
       const vrView = document.getElementById("vrView");
       const accountView = document.getElementById("accountView");
+      const gameView = document.getElementById("gameView");
       const navButtons = document.querySelectorAll(".nav-btn");
 
       function showView(viewName) {
@@ -350,10 +356,59 @@
         shopView.classList.toggle("active", viewName === "shop");
         vrView.classList.toggle("active", viewName === "vr");
         accountView.classList.toggle("active", viewName === "account");
+        gameView.classList.toggle("active", viewName === "game");
+        
+        const mainNav = document.getElementById("mainNavButtons");
+        mainNav.style.display = viewName === "game" ? "none" : "flex";
+        
         navButtons.forEach((button) => {
           button.classList.toggle("active", button.dataset.view === viewName);
         });
       }
+
+      function playGame(gameUrl) {
+        const gameFrame = document.getElementById("gameFrame");
+        
+        if (gameUrl.endsWith(".zip")) {
+          gameFrame.innerHTML = `<div style="width: 100%; height: 100%; display: grid; place-items: center; color: #8fa2c7; text-align: center;"><div>Loading game...</div></div>`;
+          
+          fetch(gameUrl)
+            .then(res => res.blob())
+            .then(blob => JSZip.loadAsync(blob))
+            .then(zip => {
+              let indexFile = null;
+              zip.forEach((path) => {
+                if (path.endsWith("index.html")) {
+                  indexFile = path;
+                }
+              });
+              
+              if (!indexFile) {
+                gameFrame.innerHTML = `<div style="width: 100%; height: 100%; display: grid; place-items: center; color: #ff6b6b; text-align: center;"><div>No index.html found in ZIP</div></div>`;
+                return;
+              }
+              
+              return zip.file(indexFile).async("blob").then(htmlBlob => {
+                const htmlUrl = URL.createObjectURL(htmlBlob);
+                gameFrame.innerHTML = `<iframe src="${htmlUrl}" style="width: 100%; height: 100%; border: none; background: #0a0e18;"></iframe>`;
+              });
+            })
+            .catch(err => {
+              console.error("Error loading game:", err);
+              gameFrame.innerHTML = `<div style="width: 100%; height: 100%; display: grid; place-items: center; color: #ff6b6b; text-align: center;"><div>Error loading game</div></div>`;
+            });
+        } else {
+          gameFrame.innerHTML = `<iframe src="${gameUrl}" style="width: 100%; height: 100%; border: none; background: #0a0e18;"></iframe>`;
+        }
+        
+        showView("game");
+      }
+
+      document.getElementById("backFromGame").addEventListener("click", () => {
+        showView("home");
+        const gameFrame = document.getElementById("gameFrame");
+        gameFrame.innerHTML = "";
+      });
 
       function isSignedIn() {
         const user = JSON.parse(localStorage.getItem("pg_user") || "null");
