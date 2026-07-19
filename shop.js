@@ -1,13 +1,13 @@
 const shopItems = [
   {
-    id: "sample-platformer",
-    name: "Sample Platformer",
-    description: "A small browser game packaged as a ZIP with an HTML entry file.",
-    price: "$0.01",
+    id: "support",
+    name: "support me",
+    description: "support me im a small video game maker",
+    price: "free",
     image: "favicon.png",
-    link: "games/sample-platformer/index.html",
-    downloadUrl: "games/sample-platformer.zip",
-    checkoutUrl: "https://example.com/checkout/sample-platformer"
+    link: "https://app.modakmakers.com/payment-link/v2/1784418849494266592",
+    downloadUrl: "" ,
+    checkoutUrl: "https://app.modakmakers.com/payment-link/v2/1784418849494266592"
   }
 ];
 
