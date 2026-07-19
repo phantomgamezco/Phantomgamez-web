@@ -5,9 +5,9 @@ const shopItems = [
     description: "support me im a small video game maker",
     price: "free",
     image: "favicon.png",
-    link: "games/sample-platformer.zip",
-    downloadUrl: "games/sample-platformer.zip",
-    checkoutUrl: "https://example.com/checkout/sample-platformer"
+    link: "https://app.modakmakers.com/payment-link/v2/1784418849494266592",
+    downloadUrl: "",
+    checkoutUrl: ""
   }
 ];
 
