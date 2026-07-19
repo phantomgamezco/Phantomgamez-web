@@ -415,28 +415,14 @@
       }
 
       function startGoogleSignIn() {
-        const clientId = "YOUR_GOOGLE_CLIENT_ID";
-        const redirectUri = location.origin + "/oauth2callback";
-        const scope = "profile email";
-        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${encodeURIComponent(scope)}`;
-        const popup = window.open(authUrl, "google_signin", "width=500,height=600");
-        if (!popup) {
-          const name = prompt("Popup blocked. Enter your name to simulate sign-in:");
-          if (name) {
-            localStorage.setItem("pg_user", JSON.stringify({ name }));
-            updateAccountUI();
-          }
-          return;
-        }
-        const name = prompt("After completing Google sign-in in the popup, enter your name to complete sign-in (or leave blank):");
-        if (name) {
-          localStorage.setItem("pg_user", JSON.stringify({ name }));
-          updateAccountUI();
-          // refresh shop state for new user
-          if (typeof renderShopItems === "function") renderShopItems();
-          if (typeof renderVrShopItems === "function") renderVrShopItems();
-          updateNavDisabledState();
-        }
+        const name = prompt("Google sign-in is simulated here. Enter your name to sign in:");
+        if (!name) return;
+
+        localStorage.setItem("pg_user", JSON.stringify({ name }));
+        updateAccountUI();
+        if (typeof renderShopItems === "function") renderShopItems();
+        if (typeof renderVrShopItems === "function") renderVrShopItems();
+        updateNavDisabledState();
       }
 
       updateAccountUI();
