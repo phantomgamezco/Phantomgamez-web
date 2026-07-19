@@ -65,7 +65,7 @@ function handlePurchase(itemId, button) {
     return;
   }
 
-  const confirmed = window.confirm(`Pay ${item.price} for ${item.name} using PayPal?`);
+  const confirmed = window.confirm(`Pay ${item.price} for ${item.name} using Pay?`);
   if (!confirmed) return;
 
   purchasedItems.add(itemId);
