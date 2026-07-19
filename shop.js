@@ -1,9 +1,9 @@
 const shopItems = [
   {
-    id: "sample-platformer",
-    name: "Sample Platformer",
-    description: "A small browser game packaged as a ZIP with an HTML entry file.",
-    price: "$0.01",
+    id: "support",
+    name: "support me",
+    description: "support me im a small video game maker",
+    price: "free",
     image: "favicon.png",
     link: "games/sample-platformer.zip",
     downloadUrl: "games/sample-platformer.zip",
@@ -65,7 +65,7 @@ function handlePurchase(itemId, button) {
     return;
   }
 
-  const confirmed = window.confirm(`Pay ${item.price} for ${item.name} using PayPal?`);
+  const confirmed = window.confirm(`Pay ${item.price} for ${item.name} using Pay?`);
   if (!confirmed) return;
 
   purchasedItems.add(itemId);
