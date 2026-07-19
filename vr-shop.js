@@ -3,11 +3,11 @@ const vrShopItems = [
     id: "vr-demo-pack",
     name: "VR Demo Pack",
     description: "A sample VR experience that can be played from a browser page or downloaded as a ZIP archive.",
-    price: "$0.01",
+    price: "free",
     image: "favicon.png",
     playUrl: "vr-demo.html",
     downloadUrl: "vr-demo.txt",
-    checkoutUrl: "https://example.com/checkout/vr-demo-pack"
+    checkoutUrl: ""
   }
 ];
 
